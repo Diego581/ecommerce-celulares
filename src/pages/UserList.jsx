@@ -17,8 +17,8 @@ const UserList = ({ token }) => {
                        customMessage || 
                        'Ha ocurrido un error inesperado';
         
-        //setErrorMessage(message);
-        //setIsErrorModalOpen(true);
+        setErrorMessage(message);
+        setIsErrorModalOpen(true);
         console.error('Error detallado:', error);
     };
 
