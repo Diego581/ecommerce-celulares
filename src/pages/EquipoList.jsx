@@ -1,22 +1,37 @@
-// src/components/EquipoList.js
+
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import EquipoForm from '../components/EquipoForm';
+import { ErrorModal } from '../components/utils/ErrorModal';
 
-const EquipoList = ({ token, setSelectedEquipo }) => {
+
+const EquipoList = ({ token }) => {
     const [equipos, setEquipos] = useState([]);
+    const [selectedEquipo, setSelectedEquipo] = useState(null);
+    const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const handleApiError = (error, customMessage) => {
+        const message = error.response?.data?.message || 
+                       error.message || 
+                       customMessage || 
+                       'Ha ocurrido un error inesperado';
+        setErrorMessage(message);
+        setIsErrorModalOpen(true);
+        console.error('Error detallado:', error);
+    };
 
     useEffect(() => {
         const fetchEquipos = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/api/equipos', {
+                const response = await axios.get('https://dummyjson.com/products', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
-                setEquipos(response.data);
+                setEquipos(response.data.products);
             } catch (error) {
-                console.error('Error fetching equipos', error);
+                handleApiError(error, 'Error al cargar la lista de equipos');
             }
         };
-
         fetchEquipos();
     }, [token]);
 
@@ -25,19 +40,54 @@ const EquipoList = ({ token, setSelectedEquipo }) => {
     };
 
     const handleDelete = async (equipoId) => {
+        if (window.confirm('¿Estás seguro de que deseas eliminar este equipo?')) {
+            try {
+                await axios.delete(`http://localhost:5000/api/equipos/${equipoId}`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setEquipos(equipos.filter(equipo => equipo.id !== equipoId));
+            } catch (error) {
+                handleApiError(error, 'Error al eliminar el equipo');
+            }
+        }
+    };
+
+    const handleSave = async (equipoData) => {
         try {
-            await axios.delete(`http://localhost:5000/api/equipos/${equipoId}`, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
-            setEquipos(equipos.filter(equipo => equipo.id !== equipoId));
+            if (selectedEquipo?.id) {
+                await axios.put(`http://localhost:5000/api/equipos/${selectedEquipo.id}`, equipoData, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+            } else {
+                const response = await axios.post('http://localhost:5000/api/equipos', equipoData, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                setEquipos([...equipos, response.data]);
+            }
+            setSelectedEquipo(null);
         } catch (error) {
-            console.error('Error deleting equipo', error);
+            handleApiError(error, 'Error al guardar el equipo');
         }
     };
 
     return (
         <div className="mt-4">
             <h2>Lista de Equipos</h2>
+            <button 
+                className="btn btn-success mb-3" 
+                onClick={() => setSelectedEquipo({})}
+            >
+                Crear Equipo
+            </button>
+
+            {selectedEquipo && (
+                <EquipoForm 
+                    equipo={selectedEquipo} 
+                    onSave={handleSave} 
+                    onCancel={() => setSelectedEquipo(null)} 
+                />
+            )}
+
             <table className="table table-striped">
                 <thead>
                     <tr>
@@ -56,13 +106,29 @@ const EquipoList = ({ token, setSelectedEquipo }) => {
                             <td>{equipo.modelo}</td>
                             <td>{equipo.marca}</td>
                             <td>
-                                <button className="btn btn-warning btn-sm me-2" onClick={() => handleEdit(equipo)}>Editar</button>
-                                <button className="btn btn-danger btn-sm" onClick={() => handleDelete(equipo.id)}>Eliminar</button>
+                                <button 
+                                    className="btn btn-warning btn-sm me-2" 
+                                    onClick={() => handleEdit(equipo)}
+                                >
+                                    Editar
+                                </button>
+                                <button 
+                                    className="btn btn-danger btn-sm" 
+                                    onClick={() => handleDelete(equipo.id)}
+                                >
+                                    Eliminar
+                                </button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+
+            <ErrorModal
+                open={isErrorModalOpen}
+                message={errorMessage}
+                onClose={() => setIsErrorModalOpen(false)}
+            />
         </div>
     );
 };
