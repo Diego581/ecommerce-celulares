@@ -11,17 +11,17 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulación de autenticación
+        
         if (username === 'admin' && password === 'admin') {
-            const adminToken = 'token-de-admin'; // Cambia esto por un token real
+            const adminToken = 'token-de-admin'; 
             setToken(adminToken);
-            setRole('admin'); // Establece el rol a admin
+            setRole('admin'); 
             navigate('/');
         } else {
-            // Asigna rol de usuario por defecto para otros usuarios
-            const userToken = 'token-de-usuario'; // Cambia esto por un token real
+           
+            const userToken = 'token-de-usuario'; 
             setToken(userToken);
-            setRole('usuario'); // Establece el rol a usuario
+            setRole('usuario'); 
             navigate('/');
         }
     };

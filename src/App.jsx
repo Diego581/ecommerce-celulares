@@ -10,6 +10,7 @@ import UserForm from './components/UserForm';
 import EquipoList from './components/EquipoList';
 import  RegisterForm  from './components/auth/RegisterForm';
 import  {PrivateRoute}  from './components/common/PrivateRoute';
+import UserForm from './components/UserForm';
 
 
 const App = () => {
@@ -25,7 +26,8 @@ const App = () => {
                         <Route path= "/users/:id" element={<UserForm />} />
                         <Route path="/equipos" element={<EquipoList />} />
                         <Route path="/register" element={<RegisterForm />} />
-                            <Route path="/dashboard"element={<PrivateRoute/>}/>
+                        <Route path="/edit" element={<UserForm />} />
+                           
                     </Routes>
             </div>
             </Router>

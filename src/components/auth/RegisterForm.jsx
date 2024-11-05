@@ -1,88 +1,91 @@
 import React, { useState } from 'react';
 
 const RegisterForm = () => {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
+    setLoading(true);
 
     try {
-      const response = await fetch('https://your-flask-api-url.railway.app/register', {
+      const response = await fetch('http://127.0.0.1:5000/api/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ name, email, password })
+        body: JSON.stringify({ username, password })
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        // Limpiar los campos del formulario después del registro exitoso
-        setName('');
-        setEmail('');
+        // Limpia el formulario
+        setUsername('');
         setPassword('');
-        
         alert('¡Registro exitoso! Ahora puedes iniciar sesión.');
       } else {
-        const error = await response.json();
-        console.error('Error al registrar usuario:', error);
-        alert('Hubo un error al registrar el usuario. Por favor, inténtalo de nuevo.');
+        setError(data.error || 'Error al registrar usuario');
       }
     } catch (error) {
-      console.error('Error al registrar usuario:', error);
-      alert('Hubo un error al registrar el usuario. Por favor, inténtalo de nuevo.');
+      setError('Error de conexión. Por favor, verifica tu conexión a internet.');
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <div>
-        <label htmlFor="name" className="block font-medium text-gray-700">
-          Nombre
-        </label>
-        <input
-          type="text"
-          id="name"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="email" className="block font-medium text-gray-700">
-          Correo electrónico
-        </label>
-        <input
-          type="email"
-          id="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-      <div>
-        <label htmlFor="password" className="block font-medium text-gray-700">
-          Contraseña
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-          required
-        />
-      </div>
-      <button
-        type="submit"
-        className="w-full rounded-md bg-indigo-600 py-2 px-4 text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-      >
-        Registrarse
-      </button>
-    </form>
+    <div className="max-w-md mx-auto mt-5">
+      {error && (
+        <div className="mb-4 p-4 text-red-700 bg-red-100 rounded-md">
+          {error}
+        </div>
+      )}
+
+      <h2 className="text-lg font-semibold mb-4">Registro</h2>
+      <form onSubmit={handleSubmit} className="space-y-3">
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">
+            Nombre
+          </label>
+          <input
+            type="text"
+            id="name"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="form-control"
+            required
+            disabled={loading}
+          />
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">
+            Contraseña
+          </label>
+          <input
+            type="password"
+            id="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className="form-control"
+            required
+            disabled={loading}
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="btn btn-primary w-full"
+          disabled={loading}
+        >
+          {loading ? 'Registrando...' : 'Registrarse'}
+        </button>
+      </form>
+    </div>
   );
 };
 
