@@ -1,22 +1,33 @@
-// src/components/UserForm.js
+import { useApi } from '../hooks/useApi';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const UserForm = ({ user = {}, onSave, onCancel }) => {
     const [username, setUsername] = useState(user.username || '');
     const [password, setPassword] = useState('');
-    const [email, setEmail] = useState(user.email || '');
     const [role, setRole] = useState(user.role || 'usuario'); // Rol por defecto
+
+    // Definir funciones API para creación y actualización
+    const createUserApi = async () => {
+        const newUser = { username, password, email, role };
+        return await axios.post('http://localhost:5000/api/users', newUser);
+    };
+
+    const updateUserApi = async () => {
+        const updatedUser = { username, password, email, role };
+        return await axios.put(`http://localhost:5000/api/users/${user.id}`, updatedUser);
+    };
+
+    // Hook personalizado useApi
+    const { execute: createUser, loading: creatingUser, error: createError } = useApi(createUserApi);
+    const { execute: updateUser, loading: updatingUser, error: updateError } = useApi(updateUserApi);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const newUser = { username, password, email, role };
         if (user.id) {
-            // Actualizar usuario existente
-            await axios.put(`http://localhost:5000/api/users/${user.id}`, newUser);
+            await updateUser(); // Actualizar usuario existente
         } else {
-            // Crear nuevo usuario
-            await axios.post('http://localhost:5000/api/users', newUser);
+            await createUser(); // Crear nuevo usuario
         }
         onSave(); // Llamar función para refrescar la lista de usuarios
     };
@@ -31,17 +42,6 @@ const UserForm = ({ user = {}, onSave, onCancel }) => {
                     id="username"
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    required
-                />
-            </div>
-            <div className="mb-3">
-                <label htmlFor="email" className="form-label">Correo Electrónico</label>
-                <input
-                    type="email"
-                    className="form-control"
-                    id="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
             </div>

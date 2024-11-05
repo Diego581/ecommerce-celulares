@@ -1,31 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import equipoService from '../api/services/equipoServices';
+import { useApi } from '../hooks/useApi';
+import { equipoService } from '../api/services/equipoServices';
 
 const EquipoList = () => {
-  const [equipos, setEquipos] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { data: equipos, error, loading, execute } = useApi(equipoService.getEquipos);
 
   useEffect(() => {
-    const fetchEquipos = async () => {
-      try {
-        setLoading(true);
-        const data = await equipoService.getEquipos();
-        setEquipos(data);
-      } catch (error) {
-        console.error('Error:', error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEquipos();
-  }, []);
+    execute();
+  }, [execute]);
 
   if (loading) return <div className="text-center">Cargando...</div>;
   if (error) return <div className="text-center text-red-600">Error: {error}</div>;
-  if (!equipos.length) return <div className="text-center">No hay equipos disponibles</div>;
+  if (!equipos?.length) return <div className="text-center">No hay equipos disponibles</div>;
 
   return (
     <div className="container mx-auto p-6">

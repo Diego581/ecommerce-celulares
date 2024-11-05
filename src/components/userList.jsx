@@ -3,6 +3,8 @@ import userService from '../api/services/userService';
 import { useApi } from '../hooks/useApi';
 import { Loading } from './common/Loading';
 import ErrorMessage from './common/ErrorMessage';
+import { Link } from 'react-router-dom';
+
 
 const UserList = () => {
   const { data: users, error, loading, execute: loadUsers } = useApi(userService.getUsers);
@@ -27,6 +29,7 @@ const UserList = () => {
     return <div>No hay usuarios disponibles.</div>;
   }
 
+
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-3xl font-bold text-center text-black mb-8">Lista de Usuarios</h2>
@@ -48,10 +51,10 @@ const UserList = () => {
                 <td className="py-4 px-5 text-sm text-gray-700">{user.rol}</td>
                 <td className="py-4 px-5 flex space-x-2">
                   <button className="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
-                    Editar
+                    <Link to={`/users/${user.id}`} >Editar</Link>
                   </button>
-                  <button className="bg-black text-white rounded-lg px-4 py-2 shadow hover:bg-gray-800 transition duration-150 ease-in-out">
-                    Eliminar
+                  <button onClick={() => userService.deleteUser(user.id)} className="bg-black text-white rounded-lg px-4 py-2 shadow hover:bg-gray-800 transition duration-150 ease-in-out">
+                  <Link>Eliminar</Link>
                   </button>
                 </td>
               </tr>
