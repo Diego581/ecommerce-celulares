@@ -32,6 +32,29 @@ const userService = {
     }
   },
 
+  getUser: async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/api/usuarios/${id}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Error fetching user:', error);
+      throw new Error('Error al obtener usuario: ' + error.message);
+    }
+  },
+
   // Crear un nuevo usuario (POST)
   createUser: async (newUser) => {
     try {

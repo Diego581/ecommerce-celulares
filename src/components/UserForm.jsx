@@ -1,36 +1,62 @@
 import { useApi } from '../hooks/useApi';
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import { useParams, useNavigate } from 'react-router-dom';
+import userService from '../api/services/userService';
+import { Loading } from './common/Loading';
+import ErrorMessage from './common/ErrorMessage';
 
-const UserForm = ({ user = {}, onSave, onCancel }) => {
-    const [username, setUsername] = useState(user.username || '');
+const UserForm = ({ onCancel }) => {
+    const { id } = useParams();
+    const navigate = useNavigate(); // Para redireccionar
+    const { data: user, error, loading, execute: getUser } = useApi(() => id ? userService.getUser(id) : Promise.resolve(null)); // Evita ejecutar si no hay ID
+
+    
+    // Estado local para el formulario
+    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState(user.role || 'usuario'); // Rol por defecto
+    const [role, setRole] = useState('usuario');
 
-    // Definir funciones API para creación y actualización
-    const createUserApi = async () => {
-        const newUser = { username, password, email, role };
-        return await axios.post('http://localhost:5000/api/users', newUser);
-    };
-
-    const updateUserApi = async () => {
-        const updatedUser = { username, password, email, role };
-        return await axios.put(`http://localhost:5000/api/users/${user.id}`, updatedUser);
-    };
-
-    // Hook personalizado useApi
-    const { execute: createUser, loading: creatingUser, error: createError } = useApi(createUserApi);
-    const { execute: updateUser, loading: updatingUser, error: updateError } = useApi(updateUserApi);
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (id) {
+                try {
+                    const userData = await userService.getUser(id);
+                    setUsername(userData.username || '');
+                    setRole(userData.role || 'usuario');
+                } catch (err) {
+                    console.error('Error al cargar el usuario:', err);
+                }
+            }
+        };
+    
+        fetchUser();
+    }, [id]);
+    if (loading) {
+        return <Loading />;
+      }
+      
+      if (error) {
+        return <ErrorMessage message={error} />;
+      }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (user.id) {
-            await updateUser(); // Actualizar usuario existente
-        } else {
-            await createUser(); // Crear nuevo usuario
-        }
-        onSave(); // Llamar función para refrescar la lista de usuarios
+        const userPayload = { username, password, role };
+        console.log(user)
+        // try {
+        //     if (user?.id) {
+        //         await userService.updateUser(user.id, userPayload);
+        //     } else {
+        //         await userService.createUser(userPayload);
+        //     }
+        //     navigate('/users'); // Redirigir a la lista de usuarios
+        // } catch (err) {
+        //     console.error('Error al guardar el usuario:', err);
+        // }
     };
+
+    if (loading) return <div>Cargando...</div>;
+    if (error) return <div>Error: {error}</div>;
 
     return (
         <form onSubmit={handleSubmit} className="mt-4">
@@ -53,7 +79,7 @@ const UserForm = ({ user = {}, onSave, onCancel }) => {
                     id="password"
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
-                    required={!user.id} // Solo requerido si es nuevo usuario
+                    required={!user?.id}
                 />
             </div>
             <div className="mb-3">

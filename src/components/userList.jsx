@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 const UserList = () => {
   const { data: users, error, loading, execute: loadUsers } = useApi(userService.getUsers);
+  
 
   const fetchUsers = useCallback(() => {
     loadUsers().catch(err => console.error('Error al cargar usuarios:', err));
