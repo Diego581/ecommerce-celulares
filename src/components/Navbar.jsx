@@ -28,12 +28,17 @@ const Navbar = () => {
                             <Link className="nav-link" to="/equipos">Equipos</Link>
                         </li>
                     </ul>
+                   
                     <ul className="navbar-nav">
+                    <li className="nav-item">
+                                <Link className="nav-link" to="/register">register</Link>
+                            </li>
                         {token ? (
                             <li className="nav-item">
                                 <button className="nav-link btn btn-link" onClick={handleLogout}>Cerrar Sesión</button>
                             </li>
-                        ) : (
+                        ) : 
+                        (
                             <li className="nav-item">
                                 <Link className="nav-link" to="/login">Iniciar Sesión</Link>
                             </li>

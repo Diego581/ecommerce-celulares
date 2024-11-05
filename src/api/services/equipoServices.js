@@ -1,4 +1,4 @@
-const API_URL = 'https://api-flask-production-20dd.up.railway.app';
+const API_URL = 'http://127.0.0.1:5000';
 
 const equipoService = {
   getEquipos: async () => {

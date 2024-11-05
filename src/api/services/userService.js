@@ -1,10 +1,10 @@
-const API_URL = 'https://api-flask-production-20dd.up.railway.app';
+const API_URL = 'http://127.0.0.1:5000';
 
 const userService = {
   getUsers: async () => {
     try {
       
-      const response = await fetch(`${API_URL}/api/api/usuarios`, {
+      const response = await fetch(`${API_URL}/api/usuarios`, {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
