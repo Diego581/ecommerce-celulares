@@ -6,10 +6,12 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import  UserList  from './components/userList';
 import Navbar from './components/Navbar';
+import UserForm from './components/UserForm';
 import EquipoList from './components/EquipoList';
 import  RegisterForm  from './components/auth/RegisterForm';
 import  {PrivateRoute}  from './components/common/PrivateRoute';
 import UserForm from './components/UserForm';
+
 
 const App = () => {
     return (
@@ -21,6 +23,7 @@ const App = () => {
                         <Route path="/" element={<Dashboard />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/users" element={<UserList />} />
+                        <Route path= "/users/:id" element={<UserForm />} />
                         <Route path="/equipos" element={<EquipoList />} />
                         <Route path="/register" element={<RegisterForm />} />
                         <Route path="/edit" element={<UserForm />} />
