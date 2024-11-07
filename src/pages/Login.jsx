@@ -2,6 +2,8 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
+import userService from '../api/services/userService';
+
 
 const Login = () => {
     const [username, setUsername] = useState('');
@@ -11,19 +13,14 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        if (username === 'admin' && password === 'admin') {
-            const adminToken = 'token-de-admin'; 
-            setToken(adminToken);
-            setRole('admin'); 
-            navigate('/');
-        } else {
-           
-            const userToken = 'token-de-usuario'; 
-            setToken(userToken);
-            setRole('usuario'); 
-            navigate('/');
-        }
+        // let userToken, userRole;
+        userService.loginUser(username, password)
+        console.log()
+
+        // setToken(userToken);
+        // setRole(userRole);
+        // localStorage.setItem('user', JSON.stringify({ username, role: userRole, token: userToken }));
+        // navigate('/');
     };
 
     return (
