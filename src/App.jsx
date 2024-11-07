@@ -9,8 +9,7 @@ import Navbar from './components/Navbar';
 import UserForm from './components/UserForm';
 import EquipoList from './components/EquipoList';
 import  RegisterForm  from './components/auth/RegisterForm';
-import  {PrivateRoute}  from './components/common/PrivateRoute';
-import UserForm from './components/UserForm';
+
 
 
 const App = () => {

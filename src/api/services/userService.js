@@ -39,11 +39,11 @@ const userService = {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        }
+        },
+        mode: "cors"
       });
 
       if (!response.ok) {
-        const text = await response.text();
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -64,6 +64,7 @@ const userService = {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
+        mode: "cors",
         body: JSON.stringify(newUser)
       });
 
@@ -93,6 +94,7 @@ const userService = {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
         },
+        mode:"cors",
         body: JSON.stringify(updatedUser)
       });
 
@@ -121,7 +123,8 @@ const userService = {
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-        }
+        },
+        mode:"cors"
       });
 
       console.log('Request URL:', `${API_URL}/api/usuarios/${id}`);
@@ -133,7 +136,7 @@ const userService = {
       }
 
       console.log('Usuario eliminado');
-      return { message: 'Usuario eliminado' };
+      return { ok:true ,message: 'Usuario eliminado' };
     } catch (error) {
       console.error('Error deleting user:', error);
       throw new Error('Error al eliminar usuario: ' + error.message);

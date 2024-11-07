@@ -8,6 +8,7 @@ import { Link } from 'react-router-dom';
 
 const UserList = () => {
   const { data: users, error, loading, execute: loadUsers } = useApi(userService.getUsers);
+
   
 
   const fetchUsers = useCallback(() => {
@@ -29,7 +30,12 @@ const UserList = () => {
   if (!users) {
     return <div>No hay usuarios disponibles.</div>;
   }
-
+  async function deleteUser(id) {
+   var response = await userService.deleteUser(id)
+   if (response.ok === true) {
+    window.location.reload();
+   }
+  }
 
   return (
     <div className="container mx-auto p-6">
@@ -56,7 +62,7 @@ const UserList = () => {
                   <button className="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
                     <Link to={`/users/${user.id}`} >Editar</Link>
                   </button>
-                  <button onClick={() => userService.deleteUser(user.id)} className="bg-black text-white rounded-lg px-4 py-2 shadow hover:bg-gray-800 transition duration-150 ease-in-out">
+                  <button onClick={() => deleteUser(user.id)} className="bg-black text-white rounded-lg px-4 py-2 shadow hover:bg-gray-800 transition duration-150 ease-in-out">
                   <Link>Eliminar</Link>
                   </button>
                 </td>

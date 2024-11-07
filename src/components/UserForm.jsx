@@ -1,62 +1,49 @@
-import { useApi } from '../hooks/useApi';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import userService from '../api/services/userService';
-import { Loading } from './common/Loading';
-import ErrorMessage from './common/ErrorMessage';
 
 const UserForm = ({ onCancel }) => {
     const { id } = useParams();
     const navigate = useNavigate(); // Para redireccionar
-    const { data: user, error, loading, execute: getUser } = useApi(() => id ? userService.getUser(id) : Promise.resolve(null)); // Evita ejecutar si no hay ID
 
     
     // Estado local para el formulario
+    const [user, setUser] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('usuario');
 
     useEffect(() => {
-        const fetchUser = async () => {
-            if (id) {
-                try {
-                    const userData = await userService.getUser(id);
-                    setUsername(userData.username || '');
-                    setRole(userData.role || 'usuario');
-                } catch (err) {
-                    console.error('Error al cargar el usuario:', err);
-                }
-            }
-        };
-    
         fetchUser();
     }, [id]);
-    if (loading) {
-        return <Loading />;
-      }
-      
-      if (error) {
-        return <ErrorMessage message={error} />;
-      }
+    const fetchUser = async () => {
+        if (id) {
+            try {
+                setUser(await userService.getUser(id));
+            } catch (err) {
+                console.error('Error al cargar el usuario:', err);
+            }
+        }
+    };
+    
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userPayload = { username, password, role };
-        console.log(user)
-        // try {
-        //     if (user?.id) {
-        //         await userService.updateUser(user.id, userPayload);
-        //     } else {
-        //         await userService.createUser(userPayload);
-        //     }
-        //     navigate('/users'); // Redirigir a la lista de usuarios
-        // } catch (err) {
-        //     console.error('Error al guardar el usuario:', err);
-        // }
+        const userPayload = { id, username, password, role };
+        console.log("esto es el user ",user)
+        try {
+            if (user.id !== null && user.id !== undefined) {
+                await userService.updateUser(user.id, userPayload);
+            } else {
+                await userService.createUser(userPayload);
+            }
+        } catch (err) {
+            console.error('Error al guardar el usuario:', err);
+        }
+        console.log("esto es userPayload ",userPayload)
+        navigate('/users'); 
     };
 
-    if (loading) return <div>Cargando...</div>;
-    if (error) return <div>Error: {error}</div>;
 
     return (
         <form onSubmit={handleSubmit} className="mt-4">
