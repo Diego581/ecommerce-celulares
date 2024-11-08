@@ -11,7 +11,7 @@ const UserForm = ({ onCancel }) => {
     const [user, setUser] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('usuario');
+    const [rol, setRol] = useState('usuario');
 
     useEffect(() => {
         fetchUser();
@@ -29,7 +29,7 @@ const UserForm = ({ onCancel }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const userPayload = { id, username, password, role };
+        const userPayload = { id, username, password, rol };
         console.log("esto es el user ",user)
         try {
             if (user.id !== null && user.id !== undefined) {
@@ -70,12 +70,12 @@ const UserForm = ({ onCancel }) => {
                 />
             </div>
             <div className="mb-3">
-                <label htmlFor="role" className="form-label">Rol</label>
+                <label htmlFor="rol" className="form-label">Rol</label>
                 <select
                     className="form-select"
-                    id="role"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
+                    id="rol"
+                    value={rol}
+                    onChange={(e) => setRol(e.target.value)}
                 >
                     <option value="usuario">Usuario</option>
                     <option value="admin">Admin</option>

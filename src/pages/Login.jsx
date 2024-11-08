@@ -1,4 +1,3 @@
-// src/pages/Login.js
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext';
@@ -13,14 +12,14 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // let userToken, userRole;
+        let userToken, userRole;
         userService.loginUser(username, password)
         console.log()
 
-        // setToken(userToken);
-        // setRole(userRole);
-        // localStorage.setItem('user', JSON.stringify({ username, role: userRole, token: userToken }));
-        // navigate('/');
+        setToken(userToken);
+        setRole(userRole);
+        localStorage.setItem('user', JSON.stringify({ username, role: userRole, token: userToken }));
+        navigate('/');
     };
 
     return (

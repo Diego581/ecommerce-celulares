@@ -46,7 +46,6 @@ const UserList = () => {
             <tr>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">ID</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Username</th>
-              <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">email</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Rol</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Acciones</th>
             </tr>
@@ -56,7 +55,6 @@ const UserList = () => {
               <tr key={user.id}>
                 <td className="py-4 px-5 text-sm text-gray-700">{user.id}</td>
                 <td className="py-4 px-5 text-sm text-gray-700">{user.username}</td>
-                <td className="py-4 px-5 text-sm text-gray-700">{user.email}</td>
                 <td className="py-4 px-5 text-sm text-gray-700">{user.rol}</td>
                 <td className="py-4 px-5 flex space-x-2">
                   <button className="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
