@@ -145,33 +145,26 @@ const userService = {
   loginUser: async (username, password) => {
     try {
       const response = await fetch(`${API_URL}/api/login`, {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        mode: "cors",
-        body: JSON.stringify({
-          "username": username,
-          "password": password
-        })
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          mode: "cors",
+          body: JSON.stringify({ username, password }),
       });
 
-      console.log('Request URL:', `${API_URL}/api/usuarios`);
-
       if (!response.ok) {
-        const text = await response.text();
-        console.error('Error response:', text);
-        throw new Error(`HTTP error! status: ${response.status}`);
+          const errorDetails = await response.json();
+          console.error('Error details:', errorDetails);
+          throw new Error(`HTTP error! status: ${response.status} - ${errorDetails.message}`);
       }
 
-      const data = await response.json();
-      console.log('login:', data["access_token"]);
-      return data;
-    } catch (error) {
-      console.error('Error creating user:', error);
-      throw new Error('Error al crear usuario: ' + error.message);
-    }
+      return response.json();
+  } catch (error) {
+      console.error('Error en loginUser:', error);
+      throw error; 
+  }
   },
 };
 export default userService;

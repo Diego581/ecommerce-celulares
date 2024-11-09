@@ -12,14 +12,16 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        let userToken, userRole;
-        userService.loginUser(username, password)
-        console.log()
-
-        setToken(userToken);
-        setRole(userRole);
-        localStorage.setItem('user', JSON.stringify({ username, role: userRole, token: userToken }));
-        navigate('/');
+        try {
+            const { access_token, role } = await userService.loginUser(username, password);
+            setToken(access_token);
+            setRole(role);
+            localStorage.setItem('user', JSON.stringify({ username, role, token: access_token }));
+            navigate('/');
+        } catch (error) {
+            console.error('Error en handleSubmit:', error);
+            alert('Credenciales incorrectas o problema del servidor.');
+        }
     };
 
     return (
