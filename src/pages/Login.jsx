@@ -12,17 +12,27 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
         try {
-            const { access_token, role } = await userService.loginUser(username, password);
+            const response = await userService.loginUser(username, password);
+            
+            const { access_token, role } = response;  
+            
             setToken(access_token);
             setRole(role);
-            localStorage.setItem('user', JSON.stringify({ username, role, token: access_token }));
+
+            localStorage.setItem('user', JSON.stringify({
+                username,
+                role,           
+                token: access_token
+            }));
+
+            // Redirigir al usuario
             navigate('/');
         } catch (error) {
-            console.error('Error en handleSubmit:', error);
-            alert('Credenciales incorrectas o problema del servidor.');
+            console.error("Error al iniciar sesión", error);
         }
-    };
+    }
 
     return (
         <div className="container mt-5">

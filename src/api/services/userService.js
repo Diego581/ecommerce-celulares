@@ -142,6 +142,7 @@ const userService = {
       throw new Error('Error al eliminar usuario: ' + error.message);
     }
   },
+  
   loginUser: async (username, password) => {
     try {
       const response = await fetch(`${API_URL}/api/login`, {
@@ -153,7 +154,6 @@ const userService = {
           mode: "cors",
           body: JSON.stringify({ username, password }),
       });
-
       if (!response.ok) {
           const errorDetails = await response.json();
           console.error('Error details:', errorDetails);

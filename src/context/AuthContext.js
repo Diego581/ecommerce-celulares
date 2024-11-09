@@ -1,11 +1,10 @@
-// src/context/AuthContext.js
 import React, { createContext, useState, useEffect } from 'react';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem("authToken") || null);
-    const [role, setRole] = useState('usuario'); // Rol por defecto
+    const [role, setRole] = useState('usuario');
 
     useEffect(() => {
         if (token) {
@@ -17,8 +16,10 @@ export const AuthProvider = ({ children }) => {
 
     const logout = () => {
         setToken(null);
-        setRole('usuario'); // Restablecer rol al cerrar sesión
+        setRole('usuario');
         localStorage.removeItem("authToken");
+        localStorage.removeItem("user");
+
     };
 
     const handleAuthError = (error) => {
