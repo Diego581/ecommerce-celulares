@@ -1,5 +1,7 @@
 import React, { createContext, useState, useEffect } from 'react';
 
+
+
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -19,7 +21,7 @@ export const AuthProvider = ({ children }) => {
         setRole('usuario');
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
-        window.location.reload(true);
+       
     };
 
     const handleAuthError = (error) => {
