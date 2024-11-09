@@ -6,7 +6,10 @@ export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem("authToken") || null);
-    const [role, setRole] = useState('usuario');
+    const [role, setRole] = useState(() => {
+        const user = localStorage.getItem("user");
+        return user ? JSON.parse(user).role : 'usuario';
+    });
 
     useEffect(() => {
         if (token) {
@@ -30,9 +33,12 @@ export const AuthProvider = ({ children }) => {
             logout();
         }
     };
+    const isAuthenticated = () => {
+        return token !== null;
+    };
 
     return (
-        <AuthContext.Provider value={{ token, setToken, logout, handleAuthError, role, setRole }}>
+        <AuthContext.Provider value={{ token, setToken, logout, handleAuthError, role, setRole, isAuthenticated }}>
             {children}
         </AuthContext.Provider>
     );

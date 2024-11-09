@@ -55,7 +55,7 @@ const Navbar = () => {
                     </ul>
                     <ul className="navbar-nav">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/register">Register</Link>
+                            <Link className="nav-link" to="/register">Registrarse</Link>
                         </li>
                         {token ? (
                             <li className="nav-item">
