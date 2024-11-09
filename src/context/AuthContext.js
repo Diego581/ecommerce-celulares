@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
         setRole('usuario');
         localStorage.removeItem("authToken");
         localStorage.removeItem("user");
-
+        window.location.reload(true);
     };
 
     const handleAuthError = (error) => {

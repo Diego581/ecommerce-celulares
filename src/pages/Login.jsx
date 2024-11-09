@@ -27,8 +27,8 @@ const Login = () => {
                 token: access_token
             }));
 
-            // Redirigir al usuario
             navigate('/');
+            window.location.reload(true);
         } catch (error) {
             console.error("Error al iniciar sesión", error);
         }
