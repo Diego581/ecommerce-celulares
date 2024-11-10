@@ -33,7 +33,7 @@ const Login = () => {
             }));
 
             navigate('/');
-            // window.location.reload(true);
+            window.location.reload(true);
         } catch (error) {
             console.error("Error al iniciar sesión", error);
         }
