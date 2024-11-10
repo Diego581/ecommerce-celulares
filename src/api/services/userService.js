@@ -145,6 +145,7 @@ const userService = {
   
   loginUser: async (username, password) => {
     try {
+      console.log("Enviando solicitud de login...");
       const response = await fetch(`${API_URL}/api/login`, {
           method: 'POST',
           headers: {
@@ -154,16 +155,22 @@ const userService = {
           mode: "cors",
           body: JSON.stringify({ username, password }),
       });
+      
+      console.log("Respuesta del servidor recibida:", response);  // Verifica que la respuesta llega
+
       if (!response.ok) {
           const errorDetails = await response.json();
-          console.error('Error details:', errorDetails);
+          console.error('Detalles de error:', errorDetails);
           throw new Error(`HTTP error! status: ${response.status} - ${errorDetails.message}`);
       }
 
-      return response.json();
+      const data = await response.json();
+      console.log('Datos recibidos:', data);  // Verifica qué contiene la respuesta
+      return data;
+
   } catch (error) {
       console.error('Error en loginUser:', error);
-      throw error; 
+      throw error;
   }
   },
 };

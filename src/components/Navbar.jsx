@@ -16,7 +16,7 @@ const Navbar = () => {
         const user = JSON.parse(localStorage.getItem('user'));
         console.log(user)
         if (user) {
-            setRole(user.role);
+            setRole(user.rol);
         }
         else{
             setRole(null)

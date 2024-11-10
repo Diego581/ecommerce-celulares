@@ -12,23 +12,28 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
+    
+        console.log('Enviando solicitud de inicio de sesión...');  // Verifica si la función se llama
+    
         try {
             const response = await userService.loginUser(username, password);
+            console.log('Respuesta del login:', response);  // Verifica si recibes la respuesta
             
-            const { access_token, role } = response;  
+            const { access_token, rol } = response;
+            console.log('Token:', access_token);
+            console.log('Role:', rol);
             
             setToken(access_token);
-            setRole(role);
+            setRole(rol);
 
             localStorage.setItem('user', JSON.stringify({
                 username,
-                role,           
+                rol,
                 token: access_token
             }));
 
             navigate('/');
-            window.location.reload(true);
+            // window.location.reload(true);
         } catch (error) {
             console.error("Error al iniciar sesión", error);
         }
