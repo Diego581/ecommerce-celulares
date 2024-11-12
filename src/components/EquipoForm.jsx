@@ -1,103 +1,98 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useParams  } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
-const EquipoForm = ({ token, fetchEquipos, selectedEquipo, setSelectedEquipo }) => {
-    const [nombre, setNombre] = useState('');
-    const [modelo, setModelo] = useState('');
-    const [marca, setMarca] = useState('');
+const FormularioEquipo = () => {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState({
+    nombre: '',
+    costo: '',
+    modelo_id: '1',
+    caracteristica_id: '1'
+  });
 
-    useEffect(() => {
-        if (selectedEquipo) {
-            setNombre(selectedEquipo.nombre);
-            setModelo(selectedEquipo.modelo);
-            setMarca(selectedEquipo.marca);
-        } else {
-            setNombre('');
-            setModelo('');
-            setMarca('');
-        }
-    }, [selectedEquipo]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+  
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    console.log('Enviando datos:', formData);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const method = selectedEquipo ? 'PUT' : 'POST';
-        const url = selectedEquipo
-            ? `http://localhost:5000/api/equipos/${selectedEquipo.id}`
-            : 'http://localhost:5000/api/equipos';
+    try {
+      const equipoData = {
+        ...formData,
+        costo: parseFloat(formData.costo),
+        modelo_id: parseInt(formData.modelo_id),
+        caracteristica_id: formData.caracteristica_id ? parseInt(formData.caracteristica_id) : null
+      };
+      var response;
+      if (id !== undefined && id!==null){
+        response = await axios.put(`http://localhost:5000/api/equipos/${id}`, equipoData);
+      }else{
+        response = await axios.post('http://localhost:5000/api/equipos', equipoData);
+      }
+      console.log('Respuesta:', response.data); 
 
-        await fetch(url, {
-            method: method,
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({ nombre, modelo, marca }),
-        });
-        
-        // Reset form after submission
-        setNombre('');
-        setModelo('');
-        setMarca('');
-        setSelectedEquipo(null);
-        fetchEquipos();
-    };
+      alert('Equipo creado exitosamente!');
+      setTimeout(() => {
+        navigate('/equipos');
+      }, 500);
 
-    return (
-        <div className="container mt-4">
-            <form onSubmit={handleSubmit} className="needs-validation" noValidate>
-                <div className="mb-3">
-                    <label htmlFor="nombre" className="form-label">Nombre del equipo</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="nombre"
-                        value={nombre}
-                        onChange={(e) => setNombre(e.target.value)}
-                        required
-                    />
-                    <div className="invalid-feedback">Por favor, ingresa el nombre del equipo.</div>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="modelo" className="form-label">Modelo del equipo</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="modelo"
-                        value={modelo}
-                        onChange={(e) => setModelo(e.target.value)}
-                        required
-                    />
-                    <div className="invalid-feedback">Por favor, ingresa el modelo del equipo.</div>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="marca" className="form-label">Marca del equipo</label>
-                    <input
-                        type="text"
-                        className="form-control"
-                        id="marca"
-                        value={marca}
-                        onChange={(e) => setMarca(e.target.value)}
-                        required
-                    />
-                    <div className="invalid-feedback">Por favor, ingresa la marca del equipo.</div>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <button type="submit" className="btn btn-primary">
-                        {selectedEquipo ? 'Actualizar' : 'Agregar'}
-                    </button>
-                    {selectedEquipo && (
-                        <button 
-                            type="button" 
-                            className="btn btn-secondary" 
-                            onClick={() => setSelectedEquipo(null)}
-                        >
-                            Cancelar
-                        </button>
-                    )}
-                </div>
-            </form>
+    } catch (error) {
+      console.error('Error:', error); 
+      alert('Error al crear el equipo: ' + (error.response?.data?.message || error.message));
+    }
+  };
+
+  return (
+    <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded-lg shadow-xl">
+      <h2 className="text-2xl font-bold mb-6">Crear Nuevo Equipo</h2>
+
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Nombre:
+          </label>
+          <input
+            type="text"
+            name="nombre"
+            value={formData.nombre}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3"
+            required
+          />
         </div>
 
-    );
+        <div className="mb-4">
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Costo:
+          </label>
+          <input
+            type="number"
+            name="costo"
+            value={formData.costo}
+            onChange={handleChange}
+            className="shadow appearance-none border rounded w-full py-2 px-3"
+            required
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="w-full bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded"
+        >
+          Crear Equipo
+        </button>
+      </form>
+    </div>
+  );
 };
 
-export default EquipoForm;
+export default FormularioEquipo;
