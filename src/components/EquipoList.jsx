@@ -29,9 +29,11 @@ const EquipoList = () => {
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-3xl font-bold text-center text-black mb-6">Lista de Equipos</h2>
-      <button className="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
-        <Link to={`/create_equipo`}>Agregar equipo</Link>
+      <button className="bg-white text-black text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
+        <Link className='text-decoration-none text-black' to={`/create_equipo`}>Agregar equipo</Link>
       </button>
+      <br />
+      <br />
       <div className="bg-white rounded-lg shadow-lg p-4">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
@@ -39,7 +41,6 @@ const EquipoList = () => {
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">ID</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Nombre</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Costo</th>
-              <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Acciones</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -56,13 +57,15 @@ const EquipoList = () => {
                 <td className="py-4 px-5 text-sm text-gray-700">
                   <button
                     onClick={() => navigate(`/equipos/${equipo.id}`)}
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black px-3 py-1 rounded mr-2"
+                    className="bg-white text-black text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out"
                   >
                     Editar
                   </button>
+                  </td>
+                  <td>
                   <button
                     onClick={() => handleDelete(equipo.id)}
-                    className="bg-red-500 hover:bg-red-600 text-black px-3 py-1 rounded"
+                    className="bg-black text-white rounded-lg px-4 py-2 shadow hover:bg-gray-800 transition duration-150 ease-in-out"
                   >
                     Eliminar
                   </button>

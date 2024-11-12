@@ -54,9 +54,9 @@ const Navbar = () => {
                         </li>}
                     </ul>
                     <ul className="navbar-nav">
-                        <li className="nav-item">
+                       { token ? <div/> : <li className="nav-item">
                             <Link className="nav-link" to="/register">Registrarse</Link>
-                        </li>
+                        </li>}
                         {token ? (
                             <li className="nav-item">
                                 <button className="nav-link btn btn-link" onClick={handleLogout}>Cerrar Sesión</button>

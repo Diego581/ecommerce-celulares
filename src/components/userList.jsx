@@ -47,7 +47,6 @@ const UserList = () => {
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">ID</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Username</th>
               <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Rol</th>
-              <th className="py-3 px-5 text-left text-sm font-medium text-gray-800">Acciones</th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -57,11 +56,13 @@ const UserList = () => {
                 <td className="py-4 px-5 text-sm text-gray-700">{user.username}</td>
                 <td className="py-4 px-5 text-sm text-gray-700">{user.rol}</td>
                 <td className="py-4 px-5 flex space-x-2">
-                  <button className="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
-                    <Link to={`/users/${user.id}`} >Editar</Link>
+                  <button className="bg-white text-black text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
+                    <Link className='text-decoration-none text-black' to={`/users/${user.id}`} >Editar</Link>
                   </button>
+                  </td>
+                  <td>
                   <button onClick={() => deleteUser(user.id)} className="bg-black text-white rounded-lg px-4 py-2 shadow hover:bg-gray-800 transition duration-150 ease-in-out">
-                  <Link>Eliminar</Link>
+                  <Link className='text-decoration-none text-white'>Eliminar</Link>
                   </button>
                 </td>
               </tr>
