@@ -4,7 +4,7 @@ import userService from '../api/services/userService';
 
 const UserForm = ({ onCancel }) => {
     const { id } = useParams();
-    const navigate = useNavigate(); // Para redireccionar
+    const navigate = useNavigate();
 
     
     // Estado local para el formulario

@@ -13,11 +13,11 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     
-        console.log('Enviando solicitud de inicio de sesión...');  // Verifica si la función se llama
+        console.log('Enviando solicitud de inicio de sesión...');  
     
         try {
             const response = await userService.loginUser(username, password);
-            console.log('Respuesta del login:', response);  // Verifica si recibes la respuesta
+            console.log('Respuesta del login:', response);  
             
             const { access_token, rol } = response;
             console.log('Token:', access_token);

@@ -156,7 +156,7 @@ const userService = {
           body: JSON.stringify({ username, password }),
       });
       
-      console.log("Respuesta del servidor recibida:", response);  // Verifica que la respuesta llega
+      console.log("Respuesta del servidor recibida:", response);  
 
       if (!response.ok) {
           const errorDetails = await response.json();
@@ -165,7 +165,7 @@ const userService = {
       }
 
       const data = await response.json();
-      console.log('Datos recibidos:', data);  // Verifica qué contiene la respuesta
+      console.log('Datos recibidos:', data);  
       return data;
 
   } catch (error) {

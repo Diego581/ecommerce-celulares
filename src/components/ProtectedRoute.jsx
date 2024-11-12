@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Navigate } from 'react-router-dom';  // Usa Navigate para redirigir
+import { Navigate } from 'react-router-dom';  
 import { AuthContext } from '../context/AuthContext';
 
 const ProtectedRoute = ({ element: Component, requiredRole }) => {
