@@ -8,7 +8,7 @@ export const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem("authToken") || null);
     const [role, setRole] = useState(() => {
         const user = localStorage.getItem("user");
-        return user ? JSON.parse(user).role : 'usuario';
+        return user ? JSON.parse(user).rol : 'usuario';
     });
 
     useEffect(() => {

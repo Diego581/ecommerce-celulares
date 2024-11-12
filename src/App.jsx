@@ -9,6 +9,7 @@ import UserForm from './components/UserForm';
 import EquipoList from './components/EquipoList';
 import RegisterForm from './components/auth/RegisterForm';
 import ProtectedRoute from './components/ProtectedRoute';
+import EquipoForm from './api/services/EquipoForm';
 
 const App = () => {
     return (
@@ -24,6 +25,7 @@ const App = () => {
                         <Route path="/users/:id" element={<ProtectedRoute element={<UserForm />} requiredRole="admin" />} />
                         <Route path="/equipos" element={<ProtectedRoute element={<EquipoList />} />} />
                         <Route path="/editar" element={<ProtectedRoute element={<UserForm />} requiredRole="admin" />} />
+                        <Route path="/create_equipo" element={<EquipoForm />} />
                     </Routes>
                 </div>
             </Router>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useApi } from '../hooks/useApi';
 import { equipoService } from '../api/services/equipoServices';
+import { Link } from 'react-router-dom';
+
 
 const EquipoList = () => {
   const { data: equipos, error, loading, execute } = useApi(equipoService.getEquipos);
@@ -16,6 +18,9 @@ const EquipoList = () => {
   return (
     <div className="container mx-auto p-6">
       <h2 className="text-3xl font-bold text-center text-black mb-6">Lista de Equipos</h2>
+      <button className="bg-white text-gray-800 border border-gray-300 rounded-lg px-4 py-2 shadow hover:bg-gray-200 transition duration-150 ease-in-out">
+                    <Link to={`/create_equipo`} >Agregar equipo</Link>
+                  </button>
       <div className="bg-white rounded-lg shadow-lg p-4">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-100">
